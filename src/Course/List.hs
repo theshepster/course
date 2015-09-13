@@ -1,7 +1,7 @@
-{-# LANGUAGE FlexibleInstances   #-}
-{-# LANGUAGE NoImplicitPrelude   #-}
-{-# LANGUAGE OverloadedStrings   #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE FlexibleInstances #-}
 
 -- + Complete the 10 exercises below by filling out the function bodies.
 --   Replace the function bodies (error "todo: ...") with an appropriate
@@ -14,12 +14,12 @@
 module Course.List where
 
 import qualified Control.Applicative as A
-import qualified Control.Monad       as M
-import           Course.Core
-import           Course.Optional
-import qualified Numeric             as N
-import qualified Prelude             as P
-import qualified System.Environment  as E
+import qualified Control.Monad as M
+import Course.Core
+import Course.Optional
+import qualified System.Environment as E
+import qualified Prelude as P
+import qualified Numeric as N
 
 
 -- $setup
@@ -75,8 +75,8 @@ headOr ::
   a
   -> List a
   -> a
-headOr a Nil = a
-headOr _ (x :. _) = x
+headOr =
+  error "todo: Course.List#headOr"
 
 -- | The product of the elements of a list.
 --
@@ -88,7 +88,8 @@ headOr _ (x :. _) = x
 product ::
   List Int
   -> Int
-product = foldRight (*) 1
+product =
+  error "todo: Course.List#product"
 
 -- | Sum the elements of the list.
 --
@@ -102,7 +103,8 @@ product = foldRight (*) 1
 sum ::
   List Int
   -> Int
-sum = foldRight (+) 0
+sum =
+  error "todo: Course.List#sum"
 
 -- | Return the length of the list.
 --
@@ -113,7 +115,8 @@ sum = foldRight (+) 0
 length ::
   List a
   -> Int
-length = foldRight (\_ l -> 1 + l) 0
+length =
+  error "todo: Course.List#length"
 
 -- | Map the given function on each element of the list.
 --
@@ -127,7 +130,8 @@ map ::
   (a -> b)
   -> List a
   -> List b
-map f = foldRight (\a bs -> f a :. bs) Nil
+map =
+  error "todo: Course.List#map"
 
 -- | Return elements satisfying the given predicate.
 --
@@ -143,7 +147,8 @@ filter ::
   (a -> Bool)
   -> List a
   -> List a
-filter p = foldRight (\a bs -> ifThenElse (p a)  (a :. bs)  bs) Nil
+filter =
+  error "todo: Course.List#filter"
 
 -- | Append two lists to a new list.
 --
@@ -161,7 +166,8 @@ filter p = foldRight (\a bs -> ifThenElse (p a)  (a :. bs)  bs) Nil
   List a
   -> List a
   -> List a
-as ++ bs = foldRight (:.) bs as
+(++) =
+  error "todo: Course.List#(++)"
 
 infixr 5 ++
 
@@ -178,7 +184,8 @@ infixr 5 ++
 flatten ::
   List (List a)
   -> List a
-flatten = foldRight (++) Nil
+flatten =
+  error "todo: Course.List#flatten"
 
 -- | Map a function then flatten to a list.
 --
@@ -194,7 +201,8 @@ flatMap ::
   (a -> List b)
   -> List a
   -> List b
-flatMap f = flatten . map f
+flatMap =
+  error "todo: Course.List#flatMap"
 
 -- | Flatten a list of lists to a list (again).
 -- HOWEVER, this time use the /flatMap/ function that you just wrote.
@@ -203,11 +211,12 @@ flatMap f = flatten . map f
 flattenAgain ::
   List (List a)
   -> List a
-flattenAgain = flatMap id
+flattenAgain =
+  error "todo: Course.List#flattenAgain"
 
 -- | Convert a list of optional values to an optional list of values.
 --
--- * If the list contains all `Full` values,
+-- * If the list contains all `Full` values, 
 -- then return `Full` list of values.
 --
 -- * If the list contains one or more `Empty` values,
@@ -230,10 +239,8 @@ flattenAgain = flatMap id
 seqOptional ::
   List (Optional a)
   -> Optional (List a)
-seqOptional = foldRight fillIfFull (Full Nil)
-  where fillIfFull Empty _ = Empty
-        fillIfFull _ Empty = Empty
-        fillIfFull (Full a) (Full as) = Full (a :. as)
+seqOptional =
+  error "todo: Course.List#seqOptional"
 
 -- | Find the first element in the list matching the predicate.
 --
@@ -255,10 +262,8 @@ find ::
   (a -> Bool)
   -> List a
   -> Optional a
-find _ Nil = Empty
-find p (a :. as)
-  | p a = Full a
-  | otherwise = find p as
+find =
+  error "todo: Course.List#find"
 
 -- | Determine if the length of the given list is greater than 4.
 --
@@ -276,12 +281,8 @@ find p (a :. as)
 lengthGT4 ::
   List a
   -> Bool
-lengthGT4 Nil = False
-lengthGT4 (_ :. Nil) = False
-lengthGT4 (_ :. _ :. Nil) = False
-lengthGT4 (_ :. _ :. _ :. Nil) = False
-lengthGT4 (_ :. _ :. _:. _:. Nil) = False
-lengthGT4 _ = True
+lengthGT4 =
+  error "todo: Course.List#lengthGT4"
 
 -- | Reverse a list.
 --
@@ -297,7 +298,8 @@ lengthGT4 _ = True
 reverse ::
   List a
   -> List a
-reverse = foldLeft (flip (:.)) Nil
+reverse =
+  error "todo: Course.List#reverse"
 
 -- | Produce an infinite `List` that seeds with the given value at its head,
 -- then runs the given function for subsequent elements
@@ -311,7 +313,8 @@ produce ::
   (a -> a)
   -> a
   -> List a
-produce f a = a :. produce f (f a)
+produce =
+  error "todo: Course.List#produce"
 
 -- | Do anything other than reverse a list.
 -- Is it even possible?
@@ -325,7 +328,9 @@ produce f a = a :. produce f (f a)
 notReverse ::
   List a
   -> List a
-notReverse = reverse
+notReverse =
+  error "todo: Is it even possible?"
+
 ---- End of list exercises
 
 largeList ::
