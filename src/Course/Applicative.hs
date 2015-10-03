@@ -46,8 +46,7 @@ class Apply f => Applicative f where
   (a -> b)
   -> f a
   -> f b
-(<$>) =
-  error "todo: Course.Applicative#(<$>)"
+function <$> context = pure function <*> context
 
 -- | Insert into Id.
 --
@@ -56,8 +55,7 @@ instance Applicative Id where
   pure ::
     a
     -> Id a
-  pure =
-    error "todo: Course.Applicative pure#instance Id"
+  pure = Id
 
 -- | Insert into a List.
 --
@@ -66,8 +64,7 @@ instance Applicative List where
   pure ::
     a
     -> List a
-  pure =
-    error "todo: Course.Applicative pure#instance List"
+  pure = (:. Nil)
 
 -- | Insert into an Optional.
 --
@@ -76,8 +73,7 @@ instance Applicative Optional where
   pure ::
     a
     -> Optional a
-  pure =
-    error "todo: Course.Applicative pure#instance Optional"
+  pure = Full
 
 -- | Insert into a constant function.
 --
@@ -85,9 +81,8 @@ instance Applicative Optional where
 instance Applicative ((->) t) where
   pure ::
     a
-    -> ((->) t a)
-  pure =
-    error "todo: Course.Applicative pure#((->) t)"
+    -> (->) t a
+  pure = const
 
 -- | Sequences a list of structures to a structure of list.
 --
@@ -109,8 +104,7 @@ sequence ::
   Applicative f =>
   List (f a)
   -> f (List a)
-sequence =
-  error "todo: Course.Applicative#sequence"
+sequence = foldRight (lift2 (:.)) $ pure Nil
 
 -- | Replicate an effect a given number of times.
 --
@@ -133,8 +127,7 @@ replicateA ::
   Int
   -> f a
   -> f (List a)
-replicateA =
-  error "todo: Course.Applicative#replicateA"
+replicateA n f = sequence $ replicate n f
 
 -- | Filter a list with a predicate that produces an effect.
 --
@@ -150,7 +143,7 @@ replicateA =
 -- >>> filtering (\a -> if a > 13 then Empty else Full (a <= 7)) (4 :. 5 :. 6 :. 13 :. 14 :. Nil)
 -- Empty
 --
--- >>> filtering (>) (4 :. 5 :. 6 :. 7 :. 8 :. 9 :. 10 :. 11 :. 12 :. Nil) 8
+    -- >>> filtering (>) (4 :. 5 :. 6 :. 7 :. 8 :. 9 :. 10 :. 11 :. 12 :. Nil) 8
 -- [9,10,11,12]
 --
 -- >>> filtering (const $ True :. True :.  Nil) (1 :. 2 :. 3 :. Nil)
@@ -161,9 +154,10 @@ filtering ::
   (a -> f Bool)
   -> List a
   -> f (List a)
-filtering =
-  error "todo: Course.Applicative#filtering"
+filtering p = foldRight (\a -> lift2 (\b-> if b then (a:.) else id) (p a)) (pure Nil)
 
+filtration :: List Bool -> List a -> List a
+filtration bs as = foldRight (\(bool, a) out -> if bool then a :. out else out) Nil (zip bs as)
 -----------------------
 -- SUPPORT LIBRARIES --
 -----------------------
